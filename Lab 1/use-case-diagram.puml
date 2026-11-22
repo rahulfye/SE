@@ -1,0 +1,45 @@
+@startuml
+left to right direction
+
+actor "Enterprise Application" as App
+actor "Security Administrator" as Admin
+actor "Compliance Officer" as Officer
+actor "Security Auditor" as Auditor
+
+rectangle "Centralized Audit Trail Compliance Engine" {
+
+    usecase "Ingest Audit Logs" as UC1
+    usecase "Parse JSON Audit Logs" as UC2
+    usecase "Detect PII" as UC3
+    usecase "Mask PII" as UC4
+    usecase "Generate SHA-256 Hash" as UC5
+    usecase "Store Audit Record" as UC6
+    usecase "Query Audit Records" as UC7
+    usecase "Generate Audit Export" as UC8
+    usecase "Verify Export Integrity" as UC9
+    usecase "Authenticate User" as UC10
+}
+
+App --> UC1
+
+Admin --> UC7
+Admin --> UC8
+
+Officer --> UC7
+Officer --> UC8
+
+Auditor --> UC7
+Auditor --> UC9
+
+UC1 ..> UC2 : <<include>>
+UC2 ..> UC3 : <<include>>
+UC3 ..> UC4 : <<include>>
+UC4 ..> UC5 : <<include>>
+UC5 ..> UC6 : <<include>>
+
+UC7 ..> UC10 : <<include>>
+UC8 ..> UC10 : <<include>>
+
+UC9 ..> UC8 : <<extend>>
+
+@enduml

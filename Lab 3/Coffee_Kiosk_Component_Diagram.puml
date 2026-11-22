@@ -1,0 +1,71 @@
+@startuml
+skinparam shadowing false
+skinparam defaultFontName "Helvetica"
+skinparam defaultFontSize 12
+skinparam roundCorner 8
+skinparam linetype ortho
+skinparam nodesep 60
+skinparam ranksep 50
+
+skinparam package {
+    BackgroundColor #F8F9FA
+    BorderColor #343A40
+    BorderThickness 1.5
+    FontColor #212529
+    FontStyle bold
+    FontSize 14
+}
+
+skinparam component {
+    BackgroundColor #E7F5FF
+    BorderColor #1971C2
+    BorderThickness 1.5
+    FontColor #1864AB
+    FontStyle bold
+    FontSize 12
+}
+
+skinparam interface {
+    BackgroundColor #FFFFFF
+    BorderColor #2B8A3E
+    BorderThickness 1.5
+    FontColor #237032
+    FontSize 11
+    FontStyle bold
+}
+
+title **Coffee Kiosk System - Layered Architecture**\n**UML Component Diagram**
+
+package "Presentation Layer" {
+    [User Interface Component] as UI <<component>>
+}
+
+package "Business Layer" {
+    [Receipt Printer Component] as RP <<component>>
+    [Order Manager Component] as OM <<component>>
+    [Payment Service Component] as PS <<component>>
+}
+
+package "Data Layer" {
+    [Database Component] as DB <<component>>
+}
+
+' Interface definitions
+() "Order Interface\n[Touchscreen Events & Menus]" as IOrder
+() "Payment Interface\n[Credit Card Processing API]" as IPay
+() "Receipt Interface\n[ESC/POS Hardware Driver]" as IPrint
+() "Database Interface\n[Menu, Pricing & Order SQL Queries]" as IDB
+
+' Provided interfaces (Ball)
+OM -up- IOrder
+PS -up- IPay
+RP -up- IPrint
+DB -up- IDB
+
+' Required interfaces (Socket) with <<use>>
+UI ..( IOrder : <<use>>
+OM ..( IPay : <<use>>
+OM ..( IPrint : <<use>>
+OM ..( IDB : <<use>>
+
+@enduml
